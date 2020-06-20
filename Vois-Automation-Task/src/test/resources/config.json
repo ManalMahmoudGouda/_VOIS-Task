@@ -1,0 +1,7 @@
+{
+  "browserToBeUsed": "FF",
+  "chromeDriverPath": "src/test/resources/chromedriver_ver_83.exe",
+  "applicationURL": "https://www.google.com",
+  "screenshotsPath": "src/../Bugs-Screenshots/"
+
+}

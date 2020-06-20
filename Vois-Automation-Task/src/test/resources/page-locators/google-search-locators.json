@@ -1,0 +1,18 @@
+{
+  "searchBar":{
+    "locatorUsing": "xpath",
+    "locatorValue": "//input[@type='text' and @name='q' and @title='Search']"
+  },
+  "searchResultList":{
+    "locatorUsing": "xpath",
+    "locatorValue": "//div[@class='med' and @id='res']//h3//ancestor::a"
+  },
+  "nextAnchor": {
+    "locatorUsing": "xpath",
+    "locatorValue": "//span[text()='Next']"
+  },
+  "resultPageInfo": {
+    "locatorUsing": "id",
+    "locatorValue": "result-stats"
+  }
+}

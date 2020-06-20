@@ -1,0 +1,8 @@
+{
+  "searchBarText":"Vodafone",
+  "secondPage":"Page 2",
+  "thirdPage":"Page 3",
+  "issueDescription":"Search result in page 2 != Search result in Page 3",
+  "testCaseDescription":"Searching for Vodafone in Google and comparing count of results in page 2 with that is page 3"
+
+}
