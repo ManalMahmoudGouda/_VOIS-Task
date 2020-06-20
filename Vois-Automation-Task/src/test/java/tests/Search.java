@@ -71,15 +71,15 @@ public class Search extends TestBase {
         driver.navigate().to((String) jsonConfig.get("applicationURL"));
         //put in variable
         logger.log(Status.INFO, "Navigated to "+jsonConfig.get("applicationURL")+ " successfully ");
-        // intailize google page
+        // initialize google page
         googleSearchPage = new GoogleSearchPage(driver);
 
         String searchValue = (String) searchTestData.get("searchBarText");
-        googleSearchPage.setInputValue(googleSearchPage.getSearchBar(), searchValue);
-        googleSearchPage.setInputValue(googleSearchPage.getSearchBar(), Keys.ENTER);
         logger.log(Status.INFO, "Write " + searchValue + " in Search Bar");
+        googleSearchPage.setInputValue(googleSearchPage.getSearchBar(), searchValue);
         Assert.assertEquals(googleSearchPage.getSearchBar().getAttribute("value"),
                 searchValue, searchValue + " isn't written in the Search Bar");
+        googleSearchPage.setInputValue(googleSearchPage.getSearchBar(), Keys.ENTER);
         logger.log(Status.PASS, "Write " + searchValue + " in Search Bar successfully");
 
         logger.log(Status.INFO, "Scroll Down until 'Next' link appear");
@@ -107,7 +107,7 @@ public class Search extends TestBase {
 
     }
 
-    public void IsNextLinkEnabled() {
+    public void IsNextLinkEnabled() throws InterruptedException {
         if (googleSearchPage.getNextAnchor().isEnabled()) {
             logger.log(Status.PASS, "Scroll Down and click on the next link");
         } else {

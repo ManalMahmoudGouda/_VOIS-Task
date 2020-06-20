@@ -1,6 +1,8 @@
 {
-  "browserToBeUsed": "FF",
+  "browserToBeUsed": "IE",
   "chromeDriverPath": "src/test/resources/chromedriver_ver_83.exe",
+  "ieDriverPath":"src/test/resources/IEDriverServer.exe",
+  "fireFoxDriverPath":"src/test/resources/geckodriver.exe",
   "applicationURL": "https://www.google.com",
   "screenshotsPath": "src/../Bugs-Screenshots/"
 

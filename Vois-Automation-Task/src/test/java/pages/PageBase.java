@@ -5,6 +5,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -29,18 +30,21 @@ public class PageBase {
      * @param elementNameInJSON name of the element attribute in Page JSON Locators File
      * @return WebElement
      */
-    protected WebElement findElementByJSON(String elementNameInJSON) {
+    protected WebElement findElementByJSON(String elementNameInJSON) throws InterruptedException {
         JSONObject searchBar = (JSONObject) this.elementLocatorsJson.get(elementNameInJSON);
 
         String locatorUsing = (String) searchBar.get("locatorUsing");
         String locatorValue = (String) searchBar.get("locatorValue");
 
         WebElement element = null;
-
-        if (locatorUsing.equals("xpath"))
+        Wait wait = new WebDriverWait(driver, 3000);
+        if (locatorUsing.equals("xpath")) {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locatorValue)));
             element = driver.findElement(By.xpath(locatorValue));
-        else if (locatorUsing.equals("id"))
+        } else if (locatorUsing.equals("id")) {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id(locatorValue)));
             element = driver.findElement(By.id(locatorValue));
+        }
 
         return element;
     }
@@ -53,10 +57,14 @@ public class PageBase {
 
         List<WebElement> element = null;
 
-        if (locatorUsing.equals("xpath"))
+        Wait wait = new WebDriverWait(driver, 3000);
+        if (locatorUsing.equals("xpath")) {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locatorValue)));
             element = driver.findElements(By.xpath(locatorValue));
-        else if (locatorUsing.equals("id"))
+        } else if (locatorUsing.equals("id")) {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id(locatorValue)));
             element = driver.findElements(By.id(locatorValue));
+        }
 
         return element;
     }
@@ -92,6 +100,7 @@ public class PageBase {
     }
 
     public void scrollDownOfPage(WebElement element) {
+        waitUntilVisible(element);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView();", element);
 

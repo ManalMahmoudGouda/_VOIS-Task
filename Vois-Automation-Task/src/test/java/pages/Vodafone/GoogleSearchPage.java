@@ -19,15 +19,15 @@ public class GoogleSearchPage extends PageBase {
         this.elementLocatorsJson = (JSONObject) JSONReader.readJson("src/test/resources/page-locators/google-search-locators.json");
     }
 
-    public WebElement getSearchBar(){
+    public WebElement getSearchBar() throws InterruptedException {
         return findElementByJSON("searchBar");
     }
 
-    public WebElement getResultPageInfo(){
+    public WebElement getResultPageInfo() throws InterruptedException {
         return findElementByJSON("resultPageInfo");
     }
 
-    public WebElement getNextAnchor(){
+    public WebElement getNextAnchor() throws InterruptedException {
         return findElementByJSON("nextAnchor");
     }
 
