@@ -1,12 +1,9 @@
 {
-  "browserToBeUsed": "FF",
+  "browserToBeUsed": "CH",
   "chromeDriverPath": "src/test/resources/chromedriver_ver_83.exe",
-  "ieDriverPath":"src/test/resources/IEDriverServer.exe",
-  "fireFoxDriverPath":"src/test/resources/geckodriver.exe",
+  "ieDriverPath": "src/test/resources/IEDriverServer.exe",
+  "fireFoxDriverPath": "src/test/resources/geckodriver.exe",
   "applicationURL": "https://www.google.com",
-  "screenshotsPath": "src/../Bugs-Screenshots/",
-  "extentReportPath":"/test-report/",
-"  osValue":"Windows",
-  "browserValue":""
-
+  "extentReportPath": "/test-report/",
+  "osValue": "Windows"
 }
