@@ -4,7 +4,6 @@ import org.json.simple.JSONObject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -30,7 +29,7 @@ public class PageBase {
      * @param elementNameInJSON name of the element attribute in Page JSON Locators File
      * @return WebElement
      */
-    protected WebElement findElementByJSON(String elementNameInJSON) throws InterruptedException {
+    protected WebElement findElementByJSON(String elementNameInJSON){
         JSONObject searchBar = (JSONObject) this.elementLocatorsJson.get(elementNameInJSON);
 
         String locatorUsing = (String) searchBar.get("locatorUsing");
@@ -49,6 +48,10 @@ public class PageBase {
         return element;
     }
 
+    /** Reads the element locator Information from Page JSON File and Initialize the Web Element List
+     * @param elementNameInJSON name of the element attribute in Page JSON Locators File
+     * @return WebElement
+     */
     protected List<WebElement> findElementsByJSON(String elementNameInJSON) {
         JSONObject searchBar = (JSONObject) this.elementLocatorsJson.get(elementNameInJSON);
 
@@ -69,36 +72,59 @@ public class PageBase {
         return element;
     }
 
-
+    /**
+     * Waits Until the  Text Box appear and Enter value passed in the parameter
+     * @param input WebElement (Text Input/Text Area)
+     * @param value text
+     */
     public void setInputValue(WebElement input, String value) {
         this.waitUntilVisible(input);
         input.sendKeys(value);
     }
 
-    public void setInputValue(WebElement input, Keys key) {
-        this.waitUntilVisible(input);
-        input.sendKeys(key);
+    /**
+     * It waits until the Text Box appear and Press Key passed in the parameter
+     * @param element WebElement
+     * @param key Key to be pressed
+     */
+    public void setInputValue(WebElement element, Keys key) {
+        this.waitUntilVisible(element);
+        element.sendKeys(key);
     }
 
+    /**
+     * It waits until the Buttons appear, then Click on it
+     * @param btn
+     */
     public void clickBtn(WebElement btn) {
         this.waitUntilVisible(btn);
         btn.click();
     }
 
+    /**
+     * Waits until the element is visible
+     * @param element
+     */
     public void waitUntilVisible(WebElement element) {
         WebDriverWait wait = new WebDriverWait(driver, 2, 5000);
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    public static int countSearchResult(List<WebElement> webElementList) {
-        return webElementList.size();
-    }
-
+    /**
+     * Checks if element Text contains value or not
+     * @param element WebElement to be searched in
+     * @param value String text to be searched
+     * @return boolean is the element contains the value or not
+     */
     public boolean IsElementTextContains(WebElement element, String value) {
         this.waitUntilVisible(element);
         return element.getText().contains(value);
     }
 
+    /**
+     * Scrolls down in the Page until reaching the input element
+     * @param element WebElement to be reached while scrolling
+     */
     public void scrollDownOfPage(WebElement element) {
         waitUntilVisible(element);
         JavascriptExecutor js = (JavascriptExecutor) driver;

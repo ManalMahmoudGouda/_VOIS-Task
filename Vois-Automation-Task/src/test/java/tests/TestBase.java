@@ -16,13 +16,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -44,7 +40,14 @@ public abstract class TestBase {
     @BeforeClass
     public void initialize() throws IOException, ParseException {
         jsonConfig = (JSONObject) JSONReader.readJson("src/test/resources/config.json");
+        this.initDriver();
+        this.startReport();
+    }
 
+    /**
+     * Initialize Driver to be used according to the 'browserToBeUsed' Parameter in config.json
+     */
+    private void initDriver(){
         String browserToBeUsed = (String) jsonConfig.get("browserToBeUsed");
         switch (browserToBeUsed) {
             case "FF":
@@ -54,7 +57,6 @@ public abstract class TestBase {
                 ffProfile.setPreference("intl.accept_languages", "en-GB");
 
                 FirefoxOptions ffOptions = new FirefoxOptions();
-//                ffOptions.setLegacy(true);
                 ffOptions.setProfile(ffProfile);
                 driver = new FirefoxDriver(ffOptions);
                 break;
@@ -80,9 +82,11 @@ public abstract class TestBase {
         }
 
         driver.manage().window().maximize();
-        this.startReport();
     }
 
+    /**
+     * Initialize the Extent Report
+     */
     private void startReport() {
         // initialize the HtmlReporter
         htmlReporter = new ExtentHtmlReporter(System.getProperty("user.dir")
@@ -116,6 +120,13 @@ public abstract class TestBase {
         htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
     }
 
+    /**
+     * Save screenshot to the Hard-Disk and returns the filename of the file
+     * Current Timestamp is added to the screenshot Name to avoid duplicate
+     * @param screenshotName screenshot name without extension
+     * @return filename of the file
+     * @throws Exception
+     */
     protected String getScreenshot(String screenshotName) throws Exception {
         //below line is just to append the date format with the screenshot name to avoid duplicate names
         String currentTimeStamp = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
@@ -134,7 +145,7 @@ public abstract class TestBase {
         return filename;
     }
 
-    //Test cleanup
+
     @AfterClass
     public void TeardownTest() {
         extent.flush();
