@@ -30,23 +30,21 @@ import java.util.concurrent.TimeUnit;
 
 public class Search extends TestBase {
     protected JSONObject searchTestData;
-    GoogleSearchPage googleSearchPage;
 
     public Search() throws IOException, ParseException {
         searchTestData = (JSONObject) JSONReader.readJson("src/test/resources/test-data/test-data.json");
-
     }
-
 
     @Test
     public void searchVodafone_TestCase() throws IOException, ParseException, InterruptedException {
         logger = extent.createTest("Google-Search", (String) searchTestData.get("testCaseDescription"));
+        String appURL = (String) jsonConfig.get("applicationURL");
 
-        driver.navigate().to((String) jsonConfig.get("applicationURL"));
+        driver.navigate().to(appURL);
         //put in variable
-        logger.log(Status.INFO, "Navigated to " + jsonConfig.get("applicationURL") + " successfully ");
+        logger.log(Status.INFO, "Navigated to " + appURL + " successfully ");
         // initialize google page
-        googleSearchPage = new GoogleSearchPage(driver);
+        GoogleSearchPage googleSearchPage = new GoogleSearchPage(driver);
 
         String searchValue = (String) searchTestData.get("searchBarText");
         logger.log(Status.INFO, "Write " + searchValue + " in Search Bar");
@@ -68,18 +66,19 @@ public class Search extends TestBase {
                 (String) searchTestData.get("secondPage")), "Didn't navigate to page 2");
         logger.log(Status.PASS, "Navigate to Page 2 successfully");
 
-
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         int countOfSecondPage = PageBase.countSearchResult(googleSearchPage.getSearchResultList());
+        logger.log(Status.INFO, "Scroll Down until 'Next' link appear");
         googleSearchPage.scrollDownOfPage(googleSearchPage.getNextAnchor());
+        logger.log(Status.INFO, "Click on Next Link to navigate to page 3");
         googleSearchPage.clickBtn(googleSearchPage.getNextAnchor());
-        Assert.assertTrue(googleSearchPage.IsElementTextContains(googleSearchPage.getResultPageInfo(), (String) searchTestData.get("thirdPage")));
+        Assert.assertTrue(googleSearchPage.IsElementTextContains(googleSearchPage.getResultPageInfo(), (String) searchTestData.get("thirdPage")), "Didn't navigate to page 3");
+        logger.log(Status.PASS, "Navigate to Page 3 successfully");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         int countOfThirdPage = PageBase.countSearchResult(googleSearchPage.getSearchResultList());
         Assert.assertEquals(countOfSecondPage, countOfThirdPage, (String) searchTestData.get("issueDescription"));
 
     }
-
 
     @AfterMethod
     public void getResult(ITestResult result) throws Exception {

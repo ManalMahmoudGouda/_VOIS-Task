@@ -33,11 +33,10 @@ import java.util.Map;
 public abstract class TestBase {
     public static WebDriver driver = null;
     protected JSONObject jsonConfig;
-   private ExtentHtmlReporter htmlReporter;
-   protected ExtentReports extent;
+    private ExtentHtmlReporter htmlReporter;
+    protected ExtentReports extent;
     //helps to generate the logs in test report.
-     protected  ExtentTest logger;
-
+    protected ExtentTest logger;
 
     public TestBase() {
     }
@@ -46,13 +45,12 @@ public abstract class TestBase {
     public void initialize() throws IOException, ParseException {
         jsonConfig = (JSONObject) JSONReader.readJson("src/test/resources/config.json");
 
-
         String browserToBeUsed = (String) jsonConfig.get("browserToBeUsed");
         switch (browserToBeUsed) {
             case "FF":
                 System.setProperty("webdriver.gecko.driver", (String) jsonConfig.get("fireFoxDriverPath"));
                 FirefoxProfile ffProfile = new FirefoxProfile();
-               // ffProfile.setPreference("javascript.enabled", false);
+                // ffProfile.setPreference("javascript.enabled", false);
                 ffProfile.setPreference("intl.accept_languages", "en-GB");
 
                 FirefoxOptions ffOptions = new FirefoxOptions();
@@ -88,7 +86,7 @@ public abstract class TestBase {
     private void startReport() {
         // initialize the HtmlReporter
         htmlReporter = new ExtentHtmlReporter(System.getProperty("user.dir")
-                + jsonConfig.get("extentReportPath")+"testReport.html");
+                + jsonConfig.get("extentReportPath") + "testReport.html");
 
         //initialize ExtentReports and attach the HtmlReporter
         extent = new ExtentReports();
@@ -96,7 +94,17 @@ public abstract class TestBase {
 
         //To add system or environment info by using the setSystemInfo method.
         extent.setSystemInfo("OS", (String) jsonConfig.get("osValue"));
-        extent.setSystemInfo("Browser",(String)jsonConfig.get("browserToBeUsed"));
+        switch ((String) jsonConfig.get("browserToBeUsed")) {
+            case "FF":
+                extent.setSystemInfo("Browser", "Firefox");
+                break;
+            case "CH":
+                extent.setSystemInfo("Browser", "Chrome");
+                break;
+            case "IE":
+                extent.setSystemInfo("Browser", "Internet Explorer");
+                break;
+        }
 
         //configuration items to change the look and feel
         //add content, manage tests etc
@@ -107,6 +115,7 @@ public abstract class TestBase {
         htmlReporter.config().setTheme(Theme.STANDARD);
         htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
     }
+
     protected String getScreenshot(String screenshotName) throws Exception {
         //below line is just to append the date format with the screenshot name to avoid duplicate names
         String currentTimeStamp = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
@@ -117,7 +126,7 @@ public abstract class TestBase {
         File source = ts.getScreenshotAs(OutputType.FILE);
 
         //after execution, you could see a folder "FailedTestsScreenshots" under src folder
-        String destination = System.getProperty("user.dir") +   jsonConfig.get("extentReportPath") + filename;
+        String destination = System.getProperty("user.dir") + jsonConfig.get("extentReportPath") + filename;
         File finalDestination = new File(destination);
         FileUtils.copyFile(source, finalDestination);
 
@@ -131,6 +140,4 @@ public abstract class TestBase {
         extent.flush();
         driver.quit();
     }
-
-
 }
