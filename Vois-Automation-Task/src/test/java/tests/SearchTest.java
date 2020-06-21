@@ -3,7 +3,6 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
-import common.JSONReader;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.Keys;
@@ -11,19 +10,21 @@ import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 import pages.Vodafone.GoogleSearchPage;
+import util.JSONReader;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class Search extends TestBase {
+public class SearchTest extends TestBase {
     protected JSONObject searchTestData;
 
-    public Search() throws IOException, ParseException {
+    public SearchTest() throws IOException, ParseException {
         searchTestData = (JSONObject) JSONReader.readJson("src/test/resources/test-data/test-data.json");
     }
 
     @Test
     public void searchVodafone_TestCase() throws IOException, ParseException {
-        logger = extent.createTest("Google-Search", (String) searchTestData.get("testCaseDescription"));
+        logger = extent.createTest("Google-SearchTest", (String) searchTestData.get("testCaseDescription"));
         String appURL = (String) jsonConfig.get("applicationURL");
         // Step 1 Navigate to Google.com
         driver.navigate().to(appURL);
@@ -32,12 +33,12 @@ public class Search extends TestBase {
         GoogleSearchPage googleSearchPage = new GoogleSearchPage(driver);
         // Step 2 write 'Vodafone' in search Bar
         String searchValue = (String) searchTestData.get("searchBarText");
-        logger.log(Status.INFO, "Write " + searchValue + " in Search Bar");
+        logger.log(Status.INFO, "Write " + searchValue + " in SearchTest Bar");
         googleSearchPage.setInputValue(googleSearchPage.getSearchBar(), searchValue);
         Assert.assertEquals(googleSearchPage.getSearchBar().getAttribute("value"),
-                searchValue, searchValue + " isn't written in the Search Bar");
+                searchValue, searchValue + " isn't written in the SearchTest Bar");
         googleSearchPage.setInputValue(googleSearchPage.getSearchBar(), Keys.ENTER);
-        logger.log(Status.PASS, "Write " + searchValue + " in Search Bar successfully");
+        logger.log(Status.PASS, "Write " + searchValue + " in SearchTest Bar successfully");
         // Step 3 Scroll Down and click on next link
         logger.log(Status.INFO, "Scroll Down until 'Next' link appear");
         googleSearchPage.scrollDownOfPage(googleSearchPage.getNextAnchor());
@@ -51,7 +52,7 @@ public class Search extends TestBase {
                 (String) searchTestData.get("secondPage")), "Didn't navigate to page 2");
         logger.log(Status.PASS, "Navigate to Page 2 successfully");
 
-        // Step 3 Count Search result in page 2 and scroll down to click on the next link to navigate to page 3
+        // Step 3 Count SearchTest result in page 2 and scroll down to click on the next link to navigate to page 3
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         int countOfSecondPage = googleSearchPage.getSearchResultList().size();
         logger.log(Status.INFO, "Scroll Down until 'Next' link appear");
@@ -64,7 +65,7 @@ public class Search extends TestBase {
         Assert.assertTrue(googleSearchPage.IsElementTextContains(googleSearchPage.getResultPageInfo(), (String) searchTestData.get("thirdPage")), "Didn't navigate to page 3");
         logger.log(Status.PASS, "Navigate to Page 3 successfully");
 
-        // Step 4 Count Search results in page 3 and compare with the  count of Search  results in page 2
+        // Step 4 Count SearchTest results in page 3 and compare with the  count of SearchTest  results in page 2
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         int countOfThirdPage = googleSearchPage.getSearchResultList().size();
         Assert.assertEquals(countOfSecondPage, countOfThirdPage, (String) searchTestData.get("issueDescription"));

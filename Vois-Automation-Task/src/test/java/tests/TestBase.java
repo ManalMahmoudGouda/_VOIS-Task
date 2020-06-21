@@ -5,7 +5,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import common.JSONReader;
+import util.JSONReader;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
