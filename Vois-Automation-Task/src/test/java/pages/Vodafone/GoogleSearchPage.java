@@ -1,11 +1,12 @@
 package pages.Vodafone;
 
-import common.JSONReader;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import pages.PageBase;
+import util.JSONReader;
+
 import java.io.IOException;
 import java.util.List;
 
