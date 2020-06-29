@@ -78,6 +78,7 @@ public abstract class TestBase {
                 InternetExplorerOptions ieOptions = new InternetExplorerOptions();
                 ieOptions.disableNativeEvents();
                 ieOptions.requireWindowFocus();
+                ieOptions.introduceFlakinessByIgnoringSecurityDomains();
                 driver = new InternetExplorerDriver(ieOptions);
         }
 

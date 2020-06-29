@@ -18,7 +18,6 @@ public class PageBase {
     public PageBase(WebDriver driver, String appURL) {
         this.driver = driver;
         this.URL = appURL;
-        PageFactory.initElements(driver, this);
     }
 
     public PageBase(WebDriver driver) {
@@ -30,10 +29,10 @@ public class PageBase {
      * @return WebElement
      */
     protected WebElement findElementByJSON(String elementNameInJSON){
-        JSONObject searchBar = (JSONObject) this.elementLocatorsJson.get(elementNameInJSON);
+        JSONObject elementObject = (JSONObject) this.elementLocatorsJson.get(elementNameInJSON);
 
-        String locatorUsing = (String) searchBar.get("locatorUsing");
-        String locatorValue = (String) searchBar.get("locatorValue");
+        String locatorUsing = (String) elementObject.get("locatorUsing");
+        String locatorValue = (String) elementObject.get("locatorValue");
 
         WebElement element = null;
         Wait wait = new WebDriverWait(driver, 3000);
@@ -53,10 +52,10 @@ public class PageBase {
      * @return WebElement
      */
     protected List<WebElement> findElementsByJSON(String elementNameInJSON) {
-        JSONObject searchBar = (JSONObject) this.elementLocatorsJson.get(elementNameInJSON);
+        JSONObject elementObject = (JSONObject) this.elementLocatorsJson.get(elementNameInJSON);
 
-        String locatorUsing = (String) searchBar.get("locatorUsing");
-        String locatorValue = (String) searchBar.get("locatorValue");
+        String locatorUsing = (String) elementObject.get("locatorUsing");
+        String locatorValue = (String) elementObject.get("locatorValue");
 
         List<WebElement> element = null;
 
